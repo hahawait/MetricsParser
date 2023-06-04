@@ -1,5 +1,5 @@
-*
+__pycache__
 .venv
 2gis
 *.xlxs
-!main.py
+test*.py
