@@ -1,5 +1,6 @@
-import time
-from bs4 import BeautifulSoup
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 from chrome_driver import create_driver
 
@@ -18,24 +19,22 @@ def transform_links(links):
 
 def get_visits_value(similar_links):
     visits_numbers = []
+    driver = create_driver()
     for link in similar_links:
         try:
-            driver = create_driver()
             driver.get(link)
-            time.sleep(5)
-            html = driver.page_source
 
-            soup = BeautifulSoup(html, 'html.parser')
-            # Поиск элемента с классом 'engagement-list__item-value'
-            value_element = soup.find('p', class_='engagement-list__item-value')
+            # Явное ожидание появления элемента с классом 'engagement-list__item-value'
+            value_element = WebDriverWait(driver, 10).until(
+                EC.presence_of_element_located((By.CLASS_NAME, 'engagement-list__item-value'))
+            )
+
             visits_numbers.append(value_element.text)
             print(f"Успешно обработана: {link}")
         except Exception as e:
             print(f"Ошибка при обработке ссылки {link}")
             visits_numbers.append('0K')
-        finally:
-            driver.quit()
-    print('Получение количества посещений закончено.')
+    driver.quit()
     return visits_numbers
 
 
@@ -55,7 +54,6 @@ def check_visits_value(base_links, visits_nums):
 
 
 def get_valid_links(sources_links):
-    print('\n\n\nЧекаем количество посещений на сайтах с подключенными метриками')
     similar_links = transform_links(sources_links)
     visits_num = get_visits_value(similar_links)
     valid_links = check_visits_value(sources_links, visits_num)

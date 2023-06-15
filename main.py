@@ -30,11 +30,27 @@ def save_to_excel(valid_links_tier1, valid_links_tier2):
     workbook.save("Ссылки.xlsx")
 
 
-if __name__ == "__main__":
+def main():
     start_time = time.time()
+
+    # Чекаем метрики
     sources_links_tier_1, sources_links_tier_2 = get_source_links()
-    print(f"\nВремя выполнения: {(round(time.time() - start_time, 2)) / 60} минут")
+    print(f"\nВремя выполнения проверки метрик: {(round(time.time() - start_time, 2)) / 60} минут")
+
+    start_time = time.time()
+
+    # Чекаем визиты
+    print('\nЧекаем количество посещений на сайтах с подключенными метриками')
+    print('\nПлатные номера:')
     valid_links_tier1 = get_valid_links(sources_links_tier_1)
+    print('\nБесплатные номера:')
     valid_links_tier2 = get_valid_links(sources_links_tier_2)
     save_to_excel(valid_links_tier1, valid_links_tier2)
-    print(f"\nВремя выполнения: {(round(time.time() - start_time, 2)) / 60} минут")
+    print(f"\nВремя выполнения получения количества посещений: {(round(time.time() - start_time, 2)) / 60} минут")
+
+
+if __name__ == "__main__":
+    start_time = time.time()
+    main()
+    print(f"\n\nОбщее время выполнения: {(round(time.time() - start_time, 2)) / 60} минут")
+    print('\n\n\n\n\nКороче, ситуация такая')

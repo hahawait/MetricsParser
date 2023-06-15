@@ -7,7 +7,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 
 
 def check_sources_links(links):
-    driver = create_driver()
+    driver = create_driver(with_caps=False)
     sources_links = []
     for link in links:
         try:
@@ -31,8 +31,12 @@ def check_sources_links(links):
 
 
 def get_source_links():
-    print('\nЯ сказала стартуем! Чекаем есть ли на сайтах метрики:')
+    print('\nЧекаем есть ли на сайтах метрики')
     links_tier_1, links_tier_2 = get_company_links('1.xlsx')
+
+    print('\nПлатные номера:')
     sources_links_tier_1 = check_sources_links(links_tier_1)
+    print('\nБесплатные номера:')
     sources_links_tier_2 = check_sources_links(links_tier_2)
+
     return sources_links_tier_1, sources_links_tier_2
