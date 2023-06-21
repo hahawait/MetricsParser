@@ -1,3 +1,8 @@
+"""
+Модуль для проверки количества посещений сайта
+Использует сайт https://www.similarweb.com
+"""
+
 import time
 
 from selenium.webdriver.common.by import By
@@ -8,6 +13,10 @@ from chrome_driver import create_driver
 
 
 def transform_links(links):
+    """
+    Метод преобразовывает ссылку для similarweb
+    """
+
     transformed_links = []
     for link in links:
         if link.startswith("http://"):
@@ -19,7 +28,11 @@ def transform_links(links):
     return transformed_links
 
 
-def get_visits_value(similar_links):
+def get_visits_value(similar_links, driver):
+    """
+    Метод определяет количество посещений сайта
+    """
+
     visits_numbers = []
     driver = create_driver()
     pause_check = 0
@@ -27,7 +40,7 @@ def get_visits_value(similar_links):
         pause_check += 1
         # Для обхода блокировки
         if pause_check % 25 == 0:
-            print('Обработано 25 ссылок, пауза 3 минуты.')
+            print('Обработано 25 ссылок, пауза 3 минуты...')
             driver.quit()
             time.sleep(180)
             print('Продолжаем')
@@ -42,7 +55,7 @@ def get_visits_value(similar_links):
 
             visits_numbers.append(value_element.text)
             print(f"Успешно обработана: {link}")
-        except Exception as e:
+        except Exception:
             print(f"Ошибка при обработке ссылки {link}")
             visits_numbers.append('0K')
     driver.quit()
@@ -50,6 +63,10 @@ def get_visits_value(similar_links):
 
 
 def check_visits_value(base_links, visits_nums, target_nums):
+    """
+    Метод сравнивает количество посещений сайта с заданным значением
+    """
+
     filtered_links = []
     not_valid_links = []
     for link, visits in zip(base_links, visits_nums):
@@ -60,15 +77,7 @@ def check_visits_value(base_links, visits_nums, target_nums):
             filtered_links.append((link, visits))                       # Добавляем пару (ссылка, значение visits_nums)
         elif scale == 'K' and float(value_str) > float(target_nums):    # Если количество посещений больше заданного числа
             filtered_links.append((link, visits))                       # Добавляем пару (ссылка, значение visits_nums)
-        elif scale == 'K' and float(value_str) == 0:                     # Если количество посещений равно 0
-            not_valid_links.append(link)                                 # Добавляем ссылку в список not_valid_links
+        elif scale == 'K' and float(value_str) == 0:                    # Если количество посещений равно 0
+            not_valid_links.append(link)                                # Добавляем ссылку в список not_valid_links
 
     return filtered_links, not_valid_links
-
-
-def get_valid_links(sources_links, target_nums):
-    similar_links = transform_links(sources_links)
-    visits_num = get_visits_value(similar_links)
-
-    valid_links, not_valid_links = check_visits_value(sources_links, visits_num, target_nums)
-    return valid_links, not_valid_links

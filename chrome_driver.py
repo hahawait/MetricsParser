@@ -1,8 +1,15 @@
+"""
+Модуль для создания и настройки драйвера
+"""
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
 
 def create_driver():
+    """
+    Создание драйвера
+    """
+
     options = Options()
 
     # dev
