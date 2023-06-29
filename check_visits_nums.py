@@ -28,21 +28,22 @@ def transform_links(links):
     return transformed_links
 
 
-def get_visits_value(similar_links, driver):
+def get_visits_value(similar_links):
     """
     Метод определяет количество посещений сайта
     """
 
     visits_numbers = []
-    driver = create_driver()
     pause_check = 0
+    driver = create_driver()
+
     for link in similar_links:
         pause_check += 1
         # Для обхода блокировки
-        if pause_check % 25 == 0:
-            print('Обработано 25 ссылок, пауза 3 минуты...')
+        if pause_check % 100 == 0:
+            print('Обработано 100 ссылок, пауза 2 минуты...')
             driver.quit()
-            time.sleep(180)
+            time.sleep(120)
             print('Продолжаем')
             driver = create_driver()
         try:
@@ -58,6 +59,7 @@ def get_visits_value(similar_links, driver):
         except Exception:
             print(f"Ошибка при обработке ссылки {link}")
             visits_numbers.append('0K')
+
     driver.quit()
     return visits_numbers
 
