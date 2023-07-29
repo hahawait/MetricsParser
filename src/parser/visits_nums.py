@@ -32,7 +32,8 @@ def _get_visits_value(link, driver):
         driver.get(transform_link)
         # Явное ожидание появления элемента с классом 'engagement-list__item-value'
         value_element = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.CLASS_NAME, 'engagement-list__item-value'))
+            EC.presence_of_element_located(
+                (By.CLASS_NAME, 'engagement-list__item-value'))
         )
         visits_number = value_element.text
         print(f"Успешно обработана: {transform_link}")
@@ -61,7 +62,6 @@ def check_visits_value(link, driver, target_nums):
         elif scale == 'K' and float(value_str) > float(target_nums):
             return visits
         else:
-            print()
             return False
     else:
         return None

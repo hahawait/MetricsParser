@@ -35,13 +35,16 @@ def main():
     # Получаем ссылки сайтов из файла
     urls_tier_1, urls_tier_2 = get_company_links('1.xlsx')
     # Пользователь вводит нужное значение
-    target_nums = input('\nВведите количество тысяч посещений для фильтрации сайтов: ')
+    target_nums = input(
+        '\nВведите количество тысяч посещений для фильтрации сайтов: ')
 
     print('\nПлатные номера:')
-    valid_1, invalid_sources_1, invalid_visits_1 = get_result(urls_tier_1, target_nums)
+    valid_1, invalid_sources_1, invalid_visits_1 = get_result(
+        urls_tier_1, target_nums)
 
     print('\nБесплатные номера:')
-    valid_2, invalid_sources_2, invalid_visits_2 = get_result(urls_tier_2, target_nums)
+    valid_2, invalid_sources_2, invalid_visits_2 = get_result(
+        urls_tier_2, target_nums)
 
     # Сохраняем результаты
     save_links(
@@ -51,9 +54,10 @@ def main():
     )
 
 
-if __name__=='__main__':
+if __name__ == '__main__':
     start_time = time.time()
     main()
-    print(f"\nВремя выполнения: {round(((time.time() - start_time) / 60), 2)} минут")
+    print(
+        f"\nВремя выполнения: {round(((time.time() - start_time) / 60), 2)} минут")
 
     input('\nНажмите Enter для закрытия консоли...\n')

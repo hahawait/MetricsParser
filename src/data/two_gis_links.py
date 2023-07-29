@@ -1,7 +1,6 @@
 """
 Модуль для работы с исходным xlsx файлом.
 """
-import os
 import pandas as pd
 from urllib.parse import urlparse
 
@@ -23,7 +22,8 @@ def get_company_links(filename):
     data_frame = data_frame.dropna(subset=["Веб-сайт 1"])
 
     # Удаление параметров из ссылок (оcтавляем только базовый url)
-    data_frame["Веб-сайт 1"] = data_frame["Веб-сайт 1"].apply(lambda url: urlparse(url).scheme + "://" + urlparse(url).netloc)
+    data_frame["Веб-сайт 1"] = data_frame["Веб-сайт 1"].apply(
+        lambda url: urlparse(url).scheme + "://" + urlparse(url).netloc)
 
     # Конвертация столбцов с номерами телефонов в строки
     data_frame["Телефон 1"] = data_frame["Телефон 1"].astype(str)
@@ -31,7 +31,8 @@ def get_company_links(filename):
 
     # Фильтрация по номерам телефонов
     match_num = ('8800', '8495', '8812')
-    condition = data_frame["Телефон 1"].str.startswith(match_num) | data_frame["Телефон 2"].str.startswith(match_num)
+    condition = data_frame["Телефон 1"].str.startswith(
+        match_num) | data_frame["Телефон 2"].str.startswith(match_num)
 
     matching_df = data_frame[condition]
     non_matching_df = data_frame[~condition]
