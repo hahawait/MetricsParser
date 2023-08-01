@@ -5,7 +5,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import WebDriverException
 
 
-def check_sources_link(link, driver):
+async def check_sources_link(link, driver):
     """
     Метод для проверки подключенных метрик к сайтам.
     Возвращает список сайтов с подключенными метриками
@@ -15,7 +15,7 @@ def check_sources_link(link, driver):
     try:
         driver.get(link)
         # Явное ожидание появления метрик в блоке head
-        WebDriverWait(driver, 5).until(
+        WebDriverWait(driver, 10).until(
             lambda driver: any(value in driver.page_source for value in ['mc.yandex.ru',
                                                                          'bitrix',
                                                                          'amo.crm',

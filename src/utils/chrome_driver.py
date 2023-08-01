@@ -5,7 +5,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
 
-def create_driver():
+async def create_driver():
     """
     Создание драйвера
     """
@@ -31,4 +31,5 @@ def create_driver():
 
     # Создать драйвер
     driver = webdriver.Chrome(options=options)
+
     return driver

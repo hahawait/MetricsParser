@@ -2,13 +2,12 @@
 Модуль для проверки количества посещений сайта
 Использует сайт https://www.similarweb.com
 """
-
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 
-def _transform_link(link):
+async def _transform_link(link):
     """
     Метод преобразовывает ссылку для similarweb
     """
@@ -21,12 +20,12 @@ def _transform_link(link):
     return transform_link
 
 
-def _get_visits_value(link, driver):
+async def _get_visits_value(link, driver):
     """
     Метод определяет количество посещений сайта
     """
 
-    transform_link = _transform_link(link)
+    transform_link = await _transform_link(link)
 
     try:
         driver.get(transform_link)
@@ -44,12 +43,12 @@ def _get_visits_value(link, driver):
     return visits_number
 
 
-def check_visits_value(link, driver, target_nums):
+async def check_visits_value(link, driver, target_nums):
     """
     Метод сравнивает количество посещений сайта с заданным значением
     """
 
-    visits = _get_visits_value(link, driver)
+    visits = await _get_visits_value(link, driver)
     print(f'Количество посещений: {visits}\n')
 
     if visits is not None:
